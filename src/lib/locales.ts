@@ -1,7 +1,3 @@
-/* eslint-disable max-lines */
-/* eslint-disable import/prefer-default-export */
-import findKey from 'lodash/findKey';
-
 const RTL_LOCALES = ['ar', 'fa', 'ur'];
 const LOCALE_NAME = {
   en: 'English',
@@ -219,7 +215,9 @@ export const getLanguageFontById = (languageId: number): string => {
  * @returns {number} language id
  */
 export const findLanguageIdByLocale = (locale: string): number => {
-  return Number(findKey(Languages, { locale }));
+  const languageId = Object.keys(Languages).find(id => Languages[id].locale === locale);
+
+  return languageId ? parseInt(languageId, 10) : 0;
 };
 
 /**
