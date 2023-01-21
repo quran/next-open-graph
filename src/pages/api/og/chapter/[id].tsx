@@ -5,15 +5,15 @@ import ChapterOpenGraph from '@/components/OpenGraph/Chapter';
 import { json, parseRequest } from '@/lib/edge';
 import { loadOpenGraphBackground } from '@/lib/og';
 import { isValidChapterId, isValidVerseNumber } from '@/lib/validator';
-import { fetchChapter } from '@/lib/api';
 import bengali from '@/lib/fonts/bengali';
 import thai from '@/lib/fonts/thai';
 import chinese from '@/lib/fonts/chinese';
 import montserrat from '@/lib/fonts/montserrat';
 import surahNames from '@/lib/fonts/surah';
+import { ChapterResponse } from '@/types/ApiResponses';
 
 export const config: PageConfig = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 const loadFont = (language: string) => {
@@ -30,8 +30,11 @@ export default async function handler(req: NextRequest) {
   const chapterId = searchParams.get('id');
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
+  const url = new URL(req.url);
   const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
-    fetchChapter(chapterId, language.code),
+    fetch(`${url.origin}/data/${language.code}/${chapterId}.json`).then(
+      res => res.json() as Promise<ChapterResponse>,
+    ),
     loadOpenGraphBackground(),
     surahNames(Number(chapterId)),
     loadFont(language.code),
