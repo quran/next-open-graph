@@ -3,17 +3,8 @@ import { ChapterResponse } from '@/types/ApiResponses';
 import stringify from './stringify';
 
 export const ITEMS_PER_PAGE = 10;
-
-const STAGING_API_HOST = 'https://staging.quran.com';
-const PRODUCTION_API_HOST = 'https://api.qurancdn.com';
-
+const API_HOST = 'https://api.qurancdn.com';
 const API_ROOT_PATH = '/api/qdc';
-
-// env variables in Vercel can't be dynamic, we have to hardcode the urls here. https://stackoverflow.com/questions/44342226/next-js-error-only-absolute-urls-are-supported
-export const API_HOST =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-    ? PRODUCTION_API_HOST
-    : STAGING_API_HOST;
 
 /**
  * Generates a url to make an api call to our backend

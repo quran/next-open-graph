@@ -8,7 +8,7 @@ import { findLanguageIdByLocale, getLanguageDataById } from '@/lib/locales';
  * @param {number} status status code
  * @returns {Response} response object
  */
-export const jsonResponse = (data: object, status = 200) => {
+export const json = (data: object, status = 200) => {
   return new Response(JSON.stringify(data), {
     status,
     headers: { 'Content-Type': 'application/json' },
@@ -45,17 +45,22 @@ export const parseRequest = (req: NextRequest): ParsedRequest => {
   };
 };
 
-const loadFileOnEdgeAsArrayBuffer = async (url: string) => {
+const relativeUrl = (url: string) => {
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}${url.startsWith('/') ? url : `/${url}`}`);
+
+  return `${baseUrl}${url.startsWith('/') ? url : `/${url}`}`;
+};
+
+const loadFileOnEdgeAsArrayBuffer = async (url: string | URL) => {
+  const res = await fetch(typeof url === 'string' ? relativeUrl(url) : url);
 
   const arrayBuffer = await res.arrayBuffer();
   return arrayBuffer;
 };
 
-const loadFileOnEdgeAsBase64 = async (url: string) => {
+const loadFileOnEdgeAsBase64 = async (url: string | URL) => {
   const arrayBuffer = await loadFileOnEdgeAsArrayBuffer(url);
 
   // convert arrayBuffer to base64 using browser's api
@@ -69,7 +74,7 @@ const loadFileOnEdgeAsBase64 = async (url: string) => {
   return base64;
 };
 
-const loadFileOnEdgeAsImage = async (url: string) => {
+const loadFileOnEdgeAsImage = async (url: string | URL) => {
   const base64 = await loadFileOnEdgeAsBase64(url);
   return `data:image/png;base64,${base64}`;
 };
@@ -81,6 +86,7 @@ const loadFileOnEdge:
       asBase64: typeof loadFileOnEdgeAsBase64;
       asImage: typeof loadFileOnEdgeAsImage;
     } = loadFileOnEdgeAsArrayBuffer;
+
 loadFileOnEdge.asArrayBuffer = loadFileOnEdgeAsArrayBuffer;
 loadFileOnEdge.asBase64 = loadFileOnEdgeAsBase64;
 loadFileOnEdge.asImage = loadFileOnEdgeAsImage;

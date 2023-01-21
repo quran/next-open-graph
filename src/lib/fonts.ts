@@ -1,10 +1,16 @@
 import { loadFileOnEdge } from './edge';
 
 // for chapters 1-59
-const FIRST_SURAH_FONT_URL = '/fonts/surah-names/surah_font.ttf';
+const FIRST_SURAH_FONT_URL = new URL(
+  '/public/fonts/surah-names/surah_font.ttf',
+  import.meta.url,
+);
 
 // for chapters 60-114
-const SECOND_SURAH_FONT_URL = '/fonts/surah-names/surah_font_2.ttf';
+const SECOND_SURAH_FONT_URL = new URL(
+  '/public/fonts/surah-names/surah_font_2.ttf',
+  import.meta.url,
+);
 
 /**
  * A function to load the surah name font file based on the chapter id.
