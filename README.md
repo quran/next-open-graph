@@ -9,9 +9,9 @@
 
 1. Main Image
 
-![Quran.com](https://next-open-graph.vercel.app/api/og)
+![Quran.com](https://og.qurancdn.com/api/og)
 
-`https://next-open-graph.vercel.app/api/og`
+`https://og.qurancdn.com/api/og`
 
 Optional query parameters:
 
@@ -21,9 +21,13 @@ Optional query parameters:
 
 2. Chapter Image
 
-![Quran.com](https://next-open-graph.vercel.app/api/og/chapter/1)
+![Quran.com](https://og.qurancdn.com/api/og/chapter/1)
 
-`https://next-open-graph.vercel.app/api/og/chapter/1`
+`https://og.qurancdn.com/api/og/chapter/[chapterId]`
+
+Required parameters:
+
+- `[chapterId]` - Chapter number from 1-114.
 
 Optional query parameters:
 
