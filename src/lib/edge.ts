@@ -45,14 +45,17 @@ export const parseRequest = (req: NextRequest): ParsedRequest => {
   };
 };
 
-const loadFileOnEdgeAsArrayBuffer = async (url: URL) => {
-  const res = await fetch(url);
+const loadFileOnEdgeAsArrayBuffer = async (url: string) => {
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}${url.startsWith('/') ? url : `/${url}`}`);
 
   const arrayBuffer = await res.arrayBuffer();
   return arrayBuffer;
 };
 
-const loadFileOnEdgeAsBase64 = async (url: URL) => {
+const loadFileOnEdgeAsBase64 = async (url: string) => {
   const arrayBuffer = await loadFileOnEdgeAsArrayBuffer(url);
 
   // convert arrayBuffer to base64 using browser's api
@@ -66,7 +69,7 @@ const loadFileOnEdgeAsBase64 = async (url: URL) => {
   return base64;
 };
 
-const loadFileOnEdgeAsImage = async (url: URL) => {
+const loadFileOnEdgeAsImage = async (url: string) => {
   const base64 = await loadFileOnEdgeAsBase64(url);
   return `data:image/png;base64,${base64}`;
 };

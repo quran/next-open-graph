@@ -1,16 +1,10 @@
 import { loadFileOnEdge } from './edge';
 
 // for chapters 1-59
-const FIRST_SURAH_FONT_URL = new URL(
-  '/public/fonts/surah-names/surah_font.ttf',
-  import.meta.url,
-);
+const FIRST_SURAH_FONT_URL = '/fonts/surah-names/surah_font.ttf';
 
 // for chapters 60-114
-const SECOND_SURAH_FONT_URL = new URL(
-  '/public/fonts/surah-names/surah_font_2.ttf',
-  import.meta.url,
-);
+const SECOND_SURAH_FONT_URL = '/fonts/surah-names/surah_font_2.ttf';
 
 /**
  * A function to load the surah name font file based on the chapter id.
@@ -26,9 +20,9 @@ const surahNames = async (chapterId: number) => {
 };
 
 const MONTSERRAT_URLS = {
-  300: new URL('/public/fonts/Montserrat/Montserrat-Light.ttf', import.meta.url),
-  500: new URL('/public/fonts/Montserrat/Montserrat-Medium.ttf', import.meta.url),
-  700: new URL('/public/fonts/Montserrat/Montserrat-Bold.ttf', import.meta.url),
+  300: '/fonts/Montserrat/Montserrat-Light.ttf',
+  500: '/fonts/Montserrat/Montserrat-Medium.ttf',
+  700: '/fonts/Montserrat/Montserrat-Bold.ttf',
 };
 
 const montserrat = async (weights: Array<keyof typeof MONTSERRAT_URLS>) => {
@@ -46,16 +40,13 @@ const montserrat = async (weights: Array<keyof typeof MONTSERRAT_URLS>) => {
   return result;
 };
 
-const CHINESE_URL = new URL(
-  '/public/fonts/chinese/ZCOOLQingKeHuangYou-Regular.ttf',
-  import.meta.url,
-);
+const CHINESE_URL = '/fonts/chinese/ZCOOLQingKeHuangYou-Regular.ttf';
 const chinese = () => loadFileOnEdge(CHINESE_URL);
 
 const THAI_URLS = {
-  300: new URL('/public/fonts/thai/Kanit-Light.ttf', import.meta.url),
-  400: new URL('/public/fonts/thai/Kanit-Regular.ttf', import.meta.url),
-  600: new URL('/public/fonts/thai/Kanit-SemiBold.ttf', import.meta.url),
+  300: '/fonts/thai/Kanit-Light.ttf',
+  400: '/fonts/thai/Kanit-Regular.ttf',
+  600: '/fonts/thai/Kanit-SemiBold.ttf',
 };
 
 const thai = async (weights: Array<keyof typeof THAI_URLS>) => {
@@ -73,10 +64,7 @@ const thai = async (weights: Array<keyof typeof THAI_URLS>) => {
   return result;
 };
 
-const BENGALI_FONT_URL = new URL(
-  '/public/fonts/bengali/NotoSerifBengali-Regular.ttf',
-  import.meta.url,
-);
+const BENGALI_FONT_URL = '/fonts/bengali/NotoSerifBengali-Regular.ttf';
 
 const bengali = () => loadFileOnEdge(BENGALI_FONT_URL);
 

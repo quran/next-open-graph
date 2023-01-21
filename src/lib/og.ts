@@ -30,23 +30,22 @@ export const chapterIdToSurahCharacter = (chapterId: number) => {
 };
 
 const screenshots = {
-  bn: new URL('/public/screenshots/screenshot-bn.png', import.meta.url),
-  en: new URL('/public/screenshots/screenshot.png', import.meta.url),
-  fr: new URL('/public/screenshots/screenshot-fr.png', import.meta.url),
-  id: new URL('/public/screenshots/screenshot-id.png', import.meta.url),
-  it: new URL('/public/screenshots/screenshot-it.png', import.meta.url),
-  ms: new URL('/public/screenshots/screenshot-ms.png', import.meta.url),
-  nl: new URL('/public/screenshots/screenshot-nl.png', import.meta.url),
-  pt: new URL('/public/screenshots/screenshot-pt.png', import.meta.url),
-  ru: new URL('/public/screenshots/screenshot-ru.png', import.meta.url),
-  sq: new URL('/public/screenshots/screenshot-sq.png', import.meta.url),
-  th: new URL('/public/screenshots/screenshot-th.png', import.meta.url),
-  tr: new URL('/public/screenshots/screenshot-tr.png', import.meta.url),
-  zh: new URL('/public/screenshots/screenshot-zh.png', import.meta.url),
+  bn: '/screenshot-bn.png',
+  en: '/screenshot.png',
+  fr: '/screenshot-fr.png',
+  id: '/screenshot-id.png',
+  it: '/screenshot-it.png',
+  ms: '/screenshot-ms.png',
+  nl: '/screenshot-nl.png',
+  pt: '/screenshot-pt.png',
+  ru: '/screenshot-ru.png',
+  sq: '/screenshot-sq.png',
+  th: '/screenshot-th.png',
+  tr: '/screenshot-tr.png',
+  zh: '/screenshot-zh.png',
 };
 
 export const loadScreenshot = (locale: string) =>
-  loadFileOnEdge.asImage(screenshots[locale]);
+  loadFileOnEdge.asImage(`/screenshots/screenshot-${locale}.png`);
 
-export const loadOpenGraphBackground = () =>
-  loadFileOnEdge.asImage(new URL('/public/bg.png', import.meta.url));
+export const loadOpenGraphBackground = () => loadFileOnEdge.asImage('/bg.png');
