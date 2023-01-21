@@ -1,0 +1,98 @@
+{
+  "ar": {
+    "surah": "سورة",
+    "default-description": "القرآن وترجمة معانيه إلى العديد من اللغات في واجهة بسيطة وسهلة",
+    "title": "اقرأ وادرس وتعلم القرآن الكريم.",
+    "verse": "آية"
+  },
+  "bn": {
+    "surah": "সূরা",
+    "default-description": "একটি সহজ এবং সহজ ইন্টারফেসে কুরআন বহু ভাষায় অনুবাদ করা হয়েছে",
+    "title": "মহান কুরআন পড়ুন, অধ্যয়ন করুন এবং শিখুন।",
+    "verse": "আয়াত"
+  },
+  "en": {
+    "surah": "Surah",
+    "default-description": "The Quran translated into many languages in a simple and easy interface",
+    "title": "Read the Quran with Translations",
+    "verse": "Verse"
+  },
+  "fa": {
+    "surah": "سوره",
+    "default-description": "قرآن در یک رابط کاربری ساده و آسان به بسیاری از زبان ها ترجمه شده است",
+    "title": "قرآن کریم را بخوانید، مطالعه کنید و یاد بگیرید.",
+    "verse": "آیه"
+  },
+  "fr": {
+    "surah": "Sourate",
+    "default-description": "Le Coran traduit dans de nombreuses langues dans une interface simple et facile",
+    "title": "Lisez, étudiez et apprenez Le Noble Coran.",
+    "verse": "Verset"
+  },
+  "id": {
+    "surah": "Surah",
+    "default-description": "Al-Quran diterjemahkan ke dalam banyak bahasa dengan antarmuka yang sederhana dan mudah",
+    "title": "Baca, pelajari, dan pelajari The Noble Quran.",
+    "verse": "Ayat"
+  },
+  "it": {
+    "surah": "Sura",
+    "default-description": "Il Corano tradotto in molte lingue con un'interfaccia semplice e facile",
+    "title": "Leggi, studia e impara Il Nobile Corano.",
+    "verse": "Versetto"
+  },
+  "ms": {
+    "surah": "Surah",
+    "default-description": "Al-Quran diterjemahkan ke dalam banyak bahasa melalui interface yang ringkas dan mudah",
+    "title": "Baca, kaji dan pelajari Al-Quran.",
+    "verse": "Ayat"
+  },
+  "nl": {
+    "surah": "Surah",
+    "default-description": "De Koran vertaald in vele talen in een eenvoudige en gemakkelijke interface",
+    "title": "Lees, bestudeer en leer de Edele Koran.",
+    "verse": "Vers"
+  },
+  "pt": {
+    "surah": "Surah",
+    "default-description": "O Alcorão traduzido para vários idiomas em uma interface simples e fácil",
+    "title": "Leia, estude e aprenda O Nobre Alcorão.",
+    "verse": "Versículo"
+  },
+  "ru": {
+    "surah": "Сура",
+    "default-description": "Коран переведен на многие языки в простом и удобном интерфейсе.",
+    "title": "Читайте, изучайте и изучайте Благородный Коран.",
+    "verse": "Стих"
+  },
+  "sq": {
+    "surah": "Surja",
+    "default-description": "Kurani i përkthyer në shumë gjuhë në një ndërfaqe të thjeshtë dhe të lehtë",
+    "title": "Lexoni, studioni dhe mësoni Kuranin Fisnik.",
+    "verse": "Vargu"
+  },
+  "th": {
+    "surah": "ซูเราะห์",
+    "default-description": "คัมภีร์กุรอานแปลเป็นหลายภาษาในอินเทอร์เฟซที่ง่ายและสะดวก",
+    "title": "อ่านศึกษาและเรียนรู้คัมภีร์อัลกุรอานอันสูงส่ง",
+    "verse": "กลอน"
+  },
+  "tr": {
+    "surah": "Sure",
+    "default-description": "Kuran, basit ve kolay bir arayüzde birçok dile çevrildi",
+    "title": "Kur'an-ı Kerim'i okuyun, inceleyin ve öğrenin.",
+    "verse": "Ayet"
+  },
+  "ur": {
+    "surah": "سورہ",
+    "default-description": "قرآن مجید کا ایک سادہ اور آسان انٹرفیس میں متعدد زبانوں میں ترجمہ کیا گیا ہے۔",
+    "title": "نوبل قرآن پڑھیں، مطالعہ کریں اور سیکھیں۔",
+    "verse": "آیت"
+  },
+  "zh": {
+    "surah": "章",
+    "default-description": "古兰经翻译成多种语言，界面简单易用",
+    "title": "阅读、学习和学习《古兰经》。",
+    "verse": "节"
+  }
+}
