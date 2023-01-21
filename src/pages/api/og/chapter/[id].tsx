@@ -30,11 +30,11 @@ export default async function handler(req: NextRequest) {
   const chapterId = searchParams.get('id');
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
-  const [bgSrc, surahFontData, mainFontData, { chapter }] = await Promise.all([
+  const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
+    fetchChapter(chapterId, language.code),
     loadOpenGraphBackground(),
     surahNames(Number(chapterId)),
     loadFont(language.code),
-    fetchChapter(chapterId, language.code),
   ]);
 
   const verse = searchParams.get('verse');

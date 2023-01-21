@@ -2,10 +2,8 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import { ChapterResponse } from '@/types/ApiResponses';
 import stringify from './stringify';
 
-// const API_HOST = 'https://api.qurancdn.com';
-// const API_ROOT_PATH = '/api/qdc';
-const API_HOST = 'https://api.quran.com';
-const API_ROOT_PATH = '/api/v4';
+const API_HOST = 'https://api.qurancdn.com';
+const API_ROOT_PATH = '/api/qdc';
 
 /**
  * Generates a url to make an api call to our backend

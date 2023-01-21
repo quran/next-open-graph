@@ -37,4 +37,5 @@ export const loadScreenshot = (locale: string) => {
   return loadFileOnEdge.asImage(url);
 };
 
-export const loadOpenGraphBackground = () => loadFileOnEdge.asImage('/bg.png');
+export const loadOpenGraphBackground = () =>
+  loadFileOnEdge.asImage(new URL('/public/bg.png', import.meta.url));
