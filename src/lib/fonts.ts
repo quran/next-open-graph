@@ -26,13 +26,9 @@ const surahNames = async (chapterId: number) => {
 };
 
 const MONTSERRAT_URLS = {
-  100: new URL('/public/fonts/Montserrat/Montserrat-Thin.ttf', import.meta.url),
   300: new URL('/public/fonts/Montserrat/Montserrat-Light.ttf', import.meta.url),
-  400: new URL('/public/fonts/Montserrat/Montserrat-Regular.ttf', import.meta.url),
   500: new URL('/public/fonts/Montserrat/Montserrat-Medium.ttf', import.meta.url),
-  600: new URL('/public/fonts/Montserrat/Montserrat-SemiBold.ttf', import.meta.url),
   700: new URL('/public/fonts/Montserrat/Montserrat-Bold.ttf', import.meta.url),
-  800: new URL('/public/fonts/Montserrat/Montserrat-ExtraBold.ttf', import.meta.url),
 };
 
 const montserrat = async (weights: Array<keyof typeof MONTSERRAT_URLS>) => {
@@ -57,14 +53,9 @@ const CHINESE_URL = new URL(
 const chinese = () => loadFileOnEdge(CHINESE_URL);
 
 const THAI_URLS = {
-  100: new URL('/public/fonts/thai/Kanit-Thin.ttf', import.meta.url),
   300: new URL('/public/fonts/thai/Kanit-Light.ttf', import.meta.url),
   400: new URL('/public/fonts/thai/Kanit-Regular.ttf', import.meta.url),
-  500: new URL('/public/fonts/thai/Kanit-Medium.ttf', import.meta.url),
   600: new URL('/public/fonts/thai/Kanit-SemiBold.ttf', import.meta.url),
-  700: new URL('/public/fonts/thai/Kanit-Bold.ttf', import.meta.url),
-  800: new URL('/public/fonts/thai/Kanit-ExtraBold.ttf', import.meta.url),
-  900: new URL('/public/fonts/thai/Kanit-Black.ttf', import.meta.url),
 };
 
 const thai = async (weights: Array<keyof typeof THAI_URLS>) => {

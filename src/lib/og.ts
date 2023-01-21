@@ -30,9 +30,6 @@ export const chapterIdToSurahCharacter = (chapterId: number) => {
 };
 
 const screenshots = {
-  // ar: new URL('/public/screenshot-ar.png', import.meta.url),
-  // fa: new URL('/public/screenshot-fa.png', import.meta.url),
-  // ur: new URL('/public/screenshot-ur.png', import.meta.url),
   bn: new URL('/public/screenshots/screenshot-bn.png', import.meta.url),
   en: new URL('/public/screenshots/screenshot.png', import.meta.url),
   fr: new URL('/public/screenshots/screenshot-fr.png', import.meta.url),

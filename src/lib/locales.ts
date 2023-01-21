@@ -1,37 +1,3 @@
-const RTL_LOCALES = ['ar', 'fa', 'ur'];
-const LOCALE_NAME = {
-  en: 'English',
-  ar: 'العربية',
-  bn: 'বাংলা',
-  fa: 'فارسی',
-  fr: 'Français',
-  id: 'Indonesia',
-  it: 'Italiano',
-  nl: 'Dutch',
-  pt: 'Português',
-  ru: 'русский',
-  sq: 'Shqip',
-  th: 'ภาษาไทย',
-  tr: 'Türkçe',
-  ur: 'اردو',
-  zh: '简体中文',
-  ms: 'Melayu',
-  de: 'Deutsch',
-  inh: 'ʁəlʁɑj mot',
-  ta: 'தமிழ்', // tamil
-  hi: 'हिन्दी',
-  ku: 'Kurdî',
-};
-
-const LOCALE_NAME_TO_CODE = {
-  bengali: 'bn',
-  english: 'en',
-  arabic: 'ar',
-  russian: 'ru',
-  urdu: 'ur',
-  Kurdish: 'ku',
-};
-
 export const LANG_LOCALE_MAP = {
   en: 'en-US',
   ar: 'ar-EG',
@@ -153,23 +119,6 @@ interface LanguageData {
 }
 
 /**
- * Check whether the current locale is RTL.
- *
- * @param {string} locale
- * @returns {boolean}
- */
-export const isRTLLocale = (locale: string): boolean => RTL_LOCALES.includes(locale);
-
-/**
- * Gir the dir of the element based on the locale.
- *
- * @param {string} locale
- * @returns {string}
- */
-export const getDir = (locale: string): Direction =>
-  isRTLLocale(locale) ? Direction.RTL : Direction.LTR;
-
-/**
  * Get direction and font name of language by language id
  *
  * @param {number} languageId
@@ -186,29 +135,6 @@ export const getLanguageDataById = (languageId: number): LanguageData => {
 };
 
 /**
- * Get direction of language by language id
- *
- * @param {number} languageId
- * @returns {string}
- */
-export const getLanguageDirectionById = (languageId: number): string => {
-  const mapping = Languages[languageId];
-
-  return mapping?.dir || Direction.LTR;
-};
-
-/**
- * Get font face name of language by language id
- *
- * @param {number} languageId
- * @returns {string}
- */
-export const getLanguageFontById = (languageId: number): string => {
-  const mapping = Languages[languageId];
-  return mapping?.font;
-};
-
-/**
  * Find language Id by its locale
  *
  * @param {string} locale
@@ -219,23 +145,6 @@ export const findLanguageIdByLocale = (locale: string): number => {
 
   return languageId ? parseInt(languageId, 10) : 0;
 };
-
-/**
- * Get the locale name.
- *
- * @param {string} locale
- * @returns {string}
- */
-export const getLocaleName = (locale: string): string => LOCALE_NAME[locale];
-
-/**
- * Converts a locale name e.g. 'english' to its code e.g. 'en'.
- *
- * @param {string} fullName
- * @returns {string}
- */
-export const getLocaleNameByFullName = (fullName: string): string =>
-  LOCALE_NAME[LOCALE_NAME_TO_CODE[fullName]];
 
 /**
  * Takes a number and returns a localized string based on the provided locale.
@@ -285,42 +194,3 @@ const getFormattedNumber = (
   }
   return `${formatter.format(0)}${formattedNumber}`;
 };
-
-/**
- * Localize a string that contains 2 numbers with a splitter in between
- * e.g. "2:55" or "2-5".
- *
- * @param {string} string
- * @param {string} lang
- * @param {string} splitter
- * @returns  {string}
- */
-export const localizeNumericalStringWithSplitter = (
-  string: string,
-  lang: string,
-  splitter = ':',
-): string =>
-  string
-    .split(splitter)
-    .map((value: string) => toLocalizedNumber(Number(value), lang))
-    .join(splitter);
-
-/**
- * Get the localized value of the verse key.
- *
- * @param {string} verseKey
- * @param {string} lang
- * @returns {string}
- */
-export const toLocalizedVerseKey = (verseKey: string, lang: string): string =>
-  localizeNumericalStringWithSplitter(verseKey, lang);
-
-/**
- * Get the localized value of a range e.g. "1-20"
- *
- * @param {string} range
- * @param {string} lang
- * @returns {string}
- */
-export const toLocalizedVersesRange = (range: string, lang: string): string =>
-  localizeNumericalStringWithSplitter(range, lang, '-');
