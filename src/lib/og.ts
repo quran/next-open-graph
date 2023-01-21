@@ -22,8 +22,8 @@ export const chapterIdToSurahCharacter = (chapterId: number) => {
   // 60-85 return a letter from A to Z lowercase
   if (chapterId >= 60 && chapterId <= 85) return letters[chapterId - 60].toLowerCase();
 
-  // 86-105 return a letter from A to Z uppercase
-  if (chapterId >= 86 && chapterId <= 105) return letters[chapterId - 86];
+  // 86-105 return a letter from G to Z uppercase
+  if (chapterId >= 86 && chapterId <= 105) return letters[chapterId - 86 + 6];
 
   // 106-114 return a number from 1 to 9
   return (chapterId - 106 + 1).toString();

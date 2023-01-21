@@ -10,7 +10,7 @@ import chinese from '@/lib/fonts/chinese';
 import montserrat from '@/lib/fonts/montserrat';
 
 export const config: PageConfig = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 };
 
 const loadFont = (language: string) => {

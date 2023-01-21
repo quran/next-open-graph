@@ -13,7 +13,7 @@ import montserrat from '@/lib/fonts/montserrat';
 import surahNames from '@/lib/fonts/surah';
 
 export const config: PageConfig = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 };
 
 const loadFont = (language: string) => {
@@ -27,7 +27,7 @@ const loadFont = (language: string) => {
 export default async function handler(req: NextRequest) {
   const { searchParams, language } = parseRequest(req);
 
-  const chapterId = searchParams.get('id');
+  const chapterId = new URL(req.url).pathname.replace('/api/og/chapter/', '');
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
   const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
