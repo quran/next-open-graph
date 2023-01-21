@@ -27,7 +27,7 @@ const loadFont = (language: string) => {
 export default async function handler(req: NextRequest) {
   const { searchParams, language } = parseRequest(req);
 
-  const chapterId = new URL(req.url).pathname.replace('/api/og/chapter/', '');
+  const chapterId = searchParams.get('id');
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
   const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
