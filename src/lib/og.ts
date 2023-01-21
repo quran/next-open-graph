@@ -29,23 +29,12 @@ export const chapterIdToSurahCharacter = (chapterId: number) => {
   return (chapterId - 106 + 1).toString();
 };
 
-const screenshots = {
-  bn: '/screenshot-bn.png',
-  en: '/screenshot.png',
-  fr: '/screenshot-fr.png',
-  id: '/screenshot-id.png',
-  it: '/screenshot-it.png',
-  ms: '/screenshot-ms.png',
-  nl: '/screenshot-nl.png',
-  pt: '/screenshot-pt.png',
-  ru: '/screenshot-ru.png',
-  sq: '/screenshot-sq.png',
-  th: '/screenshot-th.png',
-  tr: '/screenshot-tr.png',
-  zh: '/screenshot-zh.png',
+export const loadScreenshot = (locale: string) => {
+  const url =
+    locale === 'en'
+      ? `/screenshots/screenshot.png`
+      : `/screenshots/screenshot-${locale}.png`;
+  return loadFileOnEdge.asImage(url);
 };
-
-export const loadScreenshot = (locale: string) =>
-  loadFileOnEdge.asImage(`/screenshots/screenshot-${locale}.png`);
 
 export const loadOpenGraphBackground = () => loadFileOnEdge.asImage('/bg.png');
