@@ -38,12 +38,15 @@ export const makeChapterUrl = (chapterIdOrSlug: string, language: string): strin
 export const fetchChapter = async (chapterIdOrSlug: string, language: string) => {
   try {
     const url = makeChapterUrl(chapterIdOrSlug, language);
-    console.log(url);
 
     const res = await fetch(url);
     console.log('ok ', res.ok);
-    console.log('txt ', await res.text());
-    console.log('res ', res);
+    console.log('status ', res.status);
+    console.log('statusText ', res.statusText);
+    console.log(
+      'bufferLength ',
+      await res.arrayBuffer().then(buffer => buffer.byteLength),
+    );
 
     const data = await res.json();
 
