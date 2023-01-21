@@ -37,8 +37,12 @@ export const makeChapterUrl = (chapterIdOrSlug: string, language: string): strin
   makeUrl(`/chapters/${chapterIdOrSlug}`, { language });
 
 export const fetchChapter = async (chapterIdOrSlug: string, language: string) => {
-  const res = await fetch(makeChapterUrl(chapterIdOrSlug, language));
-  const data = await res.json();
+  try {
+    const res = await fetch(makeChapterUrl(chapterIdOrSlug, language));
+    const data = await res.json();
 
-  return camelizeKeys(data) as ChapterResponse;
+    return camelizeKeys(data) as ChapterResponse;
+  } catch (e) {
+    console.error(e);
+  }
 };
