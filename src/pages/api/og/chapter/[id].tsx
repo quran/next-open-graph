@@ -4,20 +4,24 @@ import type { PageConfig } from 'next/types';
 import ChapterOpenGraph from '@/components/OpenGraph/Chapter';
 import { json, parseRequest } from '@/lib/edge';
 import { loadOpenGraphBackground } from '@/lib/og';
-import edgeFonts from '@/lib/fonts';
 import { isValidChapterId, isValidVerseNumber } from '@/lib/validator';
 import { fetchChapter } from '@/lib/api';
+import bengali from '@/lib/fonts/bengali';
+import thai from '@/lib/fonts/thai';
+import chinese from '@/lib/fonts/chinese';
+import montserrat from '@/lib/fonts/montserrat';
+import surahNames from '@/lib/fonts/surah';
 
 export const config: PageConfig = {
   runtime: 'edge',
 };
 
 const loadFont = (language: string) => {
-  if (language === 'bn') return edgeFonts.bengali();
-  if (language === 'th') return edgeFonts.thai([300]).then(data => data[300]);
-  if (language === 'zh') return edgeFonts.chinese();
+  if (language === 'bn') return bengali();
+  if (language === 'th') return thai([300]).then(data => data[300]);
+  if (language === 'zh') return chinese();
 
-  return edgeFonts.montserrat([300]).then(data => data[300]);
+  return montserrat([300]).then(data => data[300]);
 };
 
 export default async function handler(req: NextRequest) {
@@ -28,7 +32,7 @@ export default async function handler(req: NextRequest) {
 
   const [bgSrc, surahFontData, mainFontData, { chapter }] = await Promise.all([
     loadOpenGraphBackground(),
-    edgeFonts.surahNames(Number(chapterId)),
+    surahNames(Number(chapterId)),
     loadFont(language.code),
     fetchChapter(chapterId, language.code),
   ]);

@@ -2,19 +2,22 @@ import { ImageResponse } from '@vercel/og';
 import HomeOpenGraph from '@/components/OpenGraph/Home';
 import { parseRequest } from '@/lib/edge';
 import { loadOpenGraphBackground, loadScreenshot } from '@/lib/og';
-import edgeFonts from '@/lib/fonts';
 import type { PageConfig } from 'next/types';
 import type { NextRequest } from 'next/server';
+import bengali from '@/lib/fonts/bengali';
+import thai from '@/lib/fonts/thai';
+import chinese from '@/lib/fonts/chinese';
+import montserrat from '@/lib/fonts/montserrat';
 
 export const config: PageConfig = {
   runtime: 'edge',
 };
 
 const loadFont = (language: string) => {
-  if (language === 'bn') return edgeFonts.bengali();
-  if (language === 'th') return edgeFonts.thai([400, 600]);
-  if (language === 'zh') return edgeFonts.chinese();
-  return edgeFonts.montserrat([500, 700]);
+  if (language === 'bn') return bengali();
+  if (language === 'th') return thai([400, 600]);
+  if (language === 'zh') return chinese();
+  return montserrat([500, 700]);
 };
 
 const premadeLocales = {
