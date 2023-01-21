@@ -41,6 +41,10 @@ export const fetchChapter = async (chapterIdOrSlug: string, language: string) =>
     console.log(url);
 
     const res = await fetch(url);
+    console.log('ok ', res.ok);
+    console.log('txt ', await res.text());
+    console.log('res ', res);
+
     const data = await res.json();
 
     console.log(data);
