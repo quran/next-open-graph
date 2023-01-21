@@ -38,8 +38,13 @@ export const makeChapterUrl = (chapterIdOrSlug: string, language: string): strin
 
 export const fetchChapter = async (chapterIdOrSlug: string, language: string) => {
   try {
-    const res = await fetch(makeChapterUrl(chapterIdOrSlug, language));
+    const url = makeChapterUrl(chapterIdOrSlug, language);
+    console.log(url);
+
+    const res = await fetch(url);
     const data = await res.json();
+
+    console.log(data);
 
     return camelizeKeys(data) as ChapterResponse;
   } catch (e) {
