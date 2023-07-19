@@ -33,3 +33,16 @@ Optional query parameters:
 
 - `lang` - Image locale. Defaults to `en`.
 - `verse` - Verse number.
+
+---
+
+3. About the Quran Image
+
+![Quran.com](https://og.qurancdn.com/api/og/about-the-quran)
+
+`https://og.qurancdn.com/api/og/about-the-quran`
+
+
+Optional query parameters:
+
+- `lang` - Image locale. Defaults to `en`.
