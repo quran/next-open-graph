@@ -6,6 +6,7 @@ const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 /**
  * We use a special font for surah names (https://www.fontspace.com/quran-surah-svg2-font-f55995) which has a special character for each surah.
  *
+ *
  * @param {number} chapterId
  * @returns {string} the character for the surah
  */
