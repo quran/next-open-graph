@@ -42,6 +42,14 @@ Optional query parameters:
 
 `https://og.qurancdn.com/api/og/about-the-quran`
 
+---
+
+4. Learning Plans Image
+
+![Quran.com](https://og.qurancdn.com/api/og/learning-plans)
+
+`https://og.qurancdn.com/api/og/learning-plans`
+
 
 Optional query parameters:
 
