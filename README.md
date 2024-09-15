@@ -49,6 +49,13 @@ Optional query parameters:
 ![Quran.com](https://og.qurancdn.com/api/og/learning-plans)
 
 `https://og.qurancdn.com/api/og/learning-plans`
+---
+
+5. Media Generator Image
+
+![Quran.com](https://og.qurancdn.com/api/og/media)
+
+`https://og.qurancdn.com/api/og/media`
 
 
 Optional query parameters:
