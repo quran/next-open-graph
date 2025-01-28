@@ -56,6 +56,13 @@ Optional query parameters:
 ![Quran.com](https://og.qurancdn.com/api/og/media)
 
 `https://og.qurancdn.com/api/og/media`
+---
+
+5. What Is Ramadan Image
+
+![Quran.com](https://og.qurancdn.com/api/og/what-is-ramadan)
+
+`https://og.qurancdn.com/api/og/what-is-ramadan`
 
 
 Optional query parameters:
