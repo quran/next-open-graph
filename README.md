@@ -68,6 +68,12 @@ Optional query parameters:
 ![Quran.com](https://og.qurancdn.com/api/og/what-is-ramadan)
 
 `https://og.qurancdn.com/api/og/what-is-ramadan`
+---
+8. Explore Answers
+
+![Quran.com](https://og.qurancdn.com/api/og/explore_answers)
+
+`https://og.qurancdn.com/api/og/explore_answers`
 
 
 Optional query parameters:
