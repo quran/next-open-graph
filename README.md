@@ -71,9 +71,15 @@ Optional query parameters:
 ---
 8. Explore Answers
 
-![Quran.com](https://og.qurancdn.com/api/og/explore_answers)
+![Quran.com](https://og.qurancdn.com/api/og/explore-answers)
 
-`https://og.qurancdn.com/api/og/explore_answers`
+`https://og.qurancdn.com/api/og/explore-answers`
+---
+9. Calendar
+
+![Quran.com](https://og.qurancdn.com/api/og/calendar)
+
+`https://og.qurancdn.com/api/og/calendar`
 
 
 Optional query parameters:
