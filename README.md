@@ -80,6 +80,12 @@ Optional query parameters:
 ![Quran.com](https://og.qurancdn.com/api/og/calendar)
 
 `https://og.qurancdn.com/api/og/calendar`
+---
+10. Beyond Ramadan
+
+![Quran.com](https://og.qurancdn.com/api/og/beyond-ramadan)
+
+`https://og.qurancdn.com/api/og/beyond-ramadan`
 
 
 Optional query parameters:
