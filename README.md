@@ -87,7 +87,49 @@ Optional query parameters:
 
 `https://og.qurancdn.com/api/og/beyond-ramadan`
 
-
 Optional query parameters:
 
 - `lang` - Image locale. Defaults to `en`.
+
+---
+
+## Testing
+
+This project uses [Playwright](https://playwright.dev/) for automated testing, including visual regression tests for OG images.
+
+### Prerequisites
+
+```bash
+# Use Node.js 24
+nvm use 24
+
+# Install dependencies
+yarn install
+
+# Install Playwright browsers
+npx playwright install chromium
+```
+
+### Running Tests
+
+```bash
+# Run all tests (starts dev server automatically)
+yarn test
+
+# Run tests in interactive UI mode
+yarn test:ui
+
+# Update visual regression snapshots
+yarn test:update-snapshots
+```
+
+### Testing Against Production
+
+```bash
+BASE_URL=https://og.qurancdn.com yarn test
+```
+
+### Test Coverage
+
+- **OG Image Generation**: Validates that all endpoints return valid PNG images
+- **Visual Regression**: Compares generated images against baseline snapshots for all 12 supported languages (ar, bn, en, es, fa, fr, id, ms, nl, sw, tr, ur)
