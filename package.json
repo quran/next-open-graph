@@ -2,11 +2,19 @@
   "name": "og.quran.com",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
+    "predev": ". $NVM_DIR/nvm.sh && nvm use",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pretest": ". $NVM_DIR/nvm.sh && nvm use",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:update-snapshots": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@vercel/og": "^0.0.22",
@@ -16,6 +24,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@types/humps": "^2.0.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.9",
