@@ -18,6 +18,7 @@ const LANG_TO_FILE: Record<string, string> = {
     sw: "og-sw.png",
     tr: "og-tr.png",
     ur: "og-ur.png",
+    vi: "og-vi.png",
 };
 
 export default async function handler(req: NextRequest) {
