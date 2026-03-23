@@ -23,5 +23,5 @@ export default async function handler(req: NextRequest): Promise<Response> {
     return fetch(preMadeLocales[language.code]);
   }
 
-  return fetch(new URL('/public/premade/og_learning_plans.png', import.meta.url),);
+  return fetch(new URL('/premade/og_learning_plans.png', req.url));
 }
