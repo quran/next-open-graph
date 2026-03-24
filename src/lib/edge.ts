@@ -45,11 +45,13 @@ export const parseRequest = (req: NextRequest): ParsedRequest => {
   };
 };
 
-const relativeUrl = (url: string) => {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+export const getEdgeBaseUrl = () => {
+  const port = process.env.PORT || '3000';
+  return `http://127.0.0.1:${port}`;
+};
 
+const relativeUrl = (url: string) => {
+  const baseUrl = getEdgeBaseUrl();
   return `${baseUrl}${url.startsWith('/') ? url : `/${url}`}`;
 };
 

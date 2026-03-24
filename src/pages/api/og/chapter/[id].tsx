@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import type { NextRequest } from 'next/server';
 import type { PageConfig } from 'next/types';
 import ChapterOpenGraph from '@/components/OpenGraph/Chapter';
-import { json, parseRequest } from '@/lib/edge';
+import { getEdgeBaseUrl, json, parseRequest } from '@/lib/edge';
 import { loadOpenGraphBackground } from '@/lib/og';
 import { isValidChapterId, isValidVerseNumber } from '@/lib/validator';
 import bengali from '@/lib/fonts/bengali';
@@ -30,9 +30,9 @@ export default async function handler(req: NextRequest) {
   const chapterId = searchParams.get('id');
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
-  const url = new URL(req.url);
+  const edgeBaseUrl = getEdgeBaseUrl();
   const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
-    fetch(`${url.origin}/data/${language.code}/${chapterId}.json`).then(
+    fetch(`${edgeBaseUrl}/data/${language.code}/${chapterId}.json`).then(
       res => res.json() as Promise<ChapterResponse>,
     ),
     loadOpenGraphBackground(),

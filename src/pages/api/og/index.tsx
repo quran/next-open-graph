@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import type { PageConfig } from "next/types";
+import { getEdgeBaseUrl } from '@/lib/edge';
 
 export const config: PageConfig = {
     runtime: "edge",
@@ -25,6 +26,6 @@ export default async function handler(req: NextRequest) {
     const lang = req.nextUrl.searchParams.get("lang")?.toLowerCase() || "en";
     const file = LANG_TO_FILE[lang] || LANG_TO_FILE.en;
 
-    const assetUrl = new URL(`/premade/${file}`, req.url);
+    const assetUrl = new URL(`/premade/${file}`, getEdgeBaseUrl());
     return fetch(assetUrl);
 }
