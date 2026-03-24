@@ -17,6 +17,7 @@
     "test:update-snapshots": "playwright test --update-snapshots"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10",
     "@vercel/og": "^0.0.22",
     "humps": "^2.0.1",
     "next": "^13.1.4",
