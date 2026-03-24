@@ -1,4 +1,5 @@
 import { parseRequest } from '@/lib/edge';
+import { getPremadeOpenGraphResponse } from '@/lib/premadeOpenGraph';
 import type { PageConfig } from 'next/types';
 import type { NextRequest } from 'next/server';
 
@@ -19,9 +20,8 @@ const preMadeLocales = {};
 export default async function handler(req: NextRequest): Promise<Response> {
   const { language } = parseRequest(req);
 
-  if (preMadeLocales[language.code]) {
-    return fetch(preMadeLocales[language.code]);
-  }
-
-  return fetch(new URL('/public/premade/og_explore_answers.png', import.meta.url),);
+  return getPremadeOpenGraphResponse({
+    localeImageUrl: preMadeLocales[language.code],
+    fallbackImagePath: '/premade/og_explore_answers.png',
+  });
 }

@@ -28,6 +28,14 @@ const STATIC_PAGES = [
   "/api/og/what-is-ramadan",
 ];
 
+// All static OG pages that return premade assets.
+const STATIC_PREMADE_PAGES = [
+  ...STATIC_PAGES,
+  "/api/og/embed",
+  "/api/og/ramadan2026",
+  "/api/og/ramadanchallenge",
+];
+
 // Sample chapters (first, middle, last, popular ones)
 const SAMPLE_CHAPTERS = [1, 2, 18, 36, 55, 67, 78, 114];
 
@@ -129,7 +137,7 @@ test.describe("Chapter OG Endpoint (/api/og/chapter/[id])", () => {
     for (const { chapter, verse } of verseTests) {
       test(`chapter ${chapter} verse ${verse}`, async ({ request }) => {
         const response = await request.get(
-          `/api/og/chapter/${chapter}?verse=${verse}`
+          `/api/og/chapter/${chapter}?verse=${verse}`,
         );
         expect(response.status()).toBe(200);
 
@@ -160,12 +168,13 @@ test.describe("Chapter OG Endpoint (/api/og/chapter/[id])", () => {
 // STATIC PAGE ENDPOINTS
 // ============================================================================
 test.describe("Static Page OG Endpoints", () => {
-  for (const page of STATIC_PAGES) {
+  for (const page of STATIC_PREMADE_PAGES) {
     const pageName = page.split("/").pop();
 
     test(`${pageName} returns valid PNG`, async ({ request }) => {
       const response = await request.get(page);
       expect(response.status(), `Failed for ${page}`).toBe(200);
+      expect(response.headers()["content-type"]).toContain("image/png");
 
       const body = await response.body();
       expect(isPng(body), `Not a valid PNG for ${page}`).toBe(true);
@@ -175,13 +184,14 @@ test.describe("Static Page OG Endpoints", () => {
 
   // Test static pages with language parameter (if supported)
   test.describe("Static pages with language parameter", () => {
-    for (const page of STATIC_PAGES) {
+    for (const page of STATIC_PREMADE_PAGES) {
       const pageName = page.split("/").pop();
 
       test(`${pageName} with lang=ar`, async ({ request }) => {
         const response = await request.get(`${page}?lang=ar`);
         // Some static pages may not support lang param, so 200 is expected
         expect(response.status()).toBe(200);
+        expect(response.headers()["content-type"]).toContain("image/png");
 
         const body = await response.body();
         expect(isPng(body)).toBe(true);
