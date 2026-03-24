@@ -20,6 +20,6 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
   return getPremadeOpenGraphResponse({
     localeImageUrl: preMadeLocales[language.code],
-    fallbackImagePath: '/premade/og_embed.png',
+    fallbackImageUrl: new URL('/public/premade/og_embed.png', import.meta.url),
   });
 }

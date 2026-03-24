@@ -1,10 +1,8 @@
-import { loadFileOnEdge } from "@/lib/edge";
-
-const PNG_CONTENT_TYPE = "image/png";
-const DEFAULT_CACHE_CONTROL = "public, max-age=2678400, must-revalidate";
+const PNG_CONTENT_TYPE = 'image/png';
+const DEFAULT_CACHE_CONTROL = 'public, max-age=2678400, must-revalidate';
 
 type PremadeOpenGraphOptions = {
-  fallbackImagePath: string;
+  fallbackImageUrl: URL;
   localeImageUrl?: string;
 };
 
@@ -38,17 +36,27 @@ const fetchPng = async (url: string): Promise<Response> => {
   return toPngResponse(body, response.headers, response.status);
 };
 
+const fetchFallbackPng = async (url: URL): Promise<Response> => {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    return response;
+  }
+
+  const body = await response.arrayBuffer();
+  return toPngResponse(body);
+};
+
 /**
  * Returns a premade OG image while enforcing `image/png` content type.
  */
 export const getPremadeOpenGraphResponse = async ({
-  fallbackImagePath,
+  fallbackImageUrl,
   localeImageUrl,
 }: PremadeOpenGraphOptions): Promise<Response> => {
   if (localeImageUrl) {
     return fetchPng(localeImageUrl);
   }
 
-  const body = await loadFileOnEdge.asArrayBuffer(fallbackImagePath);
-  return toPngResponse(body);
+  return fetchFallbackPng(fallbackImageUrl);
 };

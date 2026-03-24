@@ -201,6 +201,23 @@ test.describe("Static Page OG Endpoints", () => {
 });
 
 // ============================================================================
+// STATIC PREMADE FALLBACK (PORT AGNOSTIC)
+// ============================================================================
+test.describe("Static Premade Fallback", () => {
+  test("ramadan2026 fallback works on non-default port", async ({
+    request,
+  }) => {
+    const response = await request.get("/api/og/ramadan2026?lang=en");
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/png");
+
+    const body = await response.body();
+    expect(isPng(body)).toBe(true);
+    expect(body.length).toBeGreaterThan(1000);
+  });
+});
+
+// ============================================================================
 // ABOUT THE QURAN ENDPOINT
 // ============================================================================
 test.describe("About The Quran (/api/og/about-the-quran)", () => {
