@@ -21,6 +21,11 @@ type ParsedRequest = {
   searchParams: URLSearchParams;
 };
 
+type EdgeExceptionContext = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
+
 /**
  *  Parse request object
  *
@@ -48,6 +53,39 @@ export const parseRequest = (req: NextRequest): ParsedRequest => {
 export const getEdgeBaseUrl = () => {
   const port = process.env.PORT || '3000';
   return `http://127.0.0.1:${port}`;
+};
+
+const captureEdgeException = async (
+  error: unknown,
+  context?: EdgeExceptionContext,
+) => {
+  const Sentry = await import('@sentry/nextjs');
+
+  Sentry.withScope(scope => {
+    if (context) {
+      Object.entries(context).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          scope.setExtra(key, value);
+        }
+      });
+    }
+
+    Sentry.captureException(error);
+  });
+
+  await Sentry.flush(2000).catch(() => undefined);
+};
+
+export const fetchWithEdgeSentry = async (
+  url: string | URL,
+  context?: EdgeExceptionContext,
+) => {
+  try {
+    return await fetch(url);
+  } catch (error) {
+    await captureEdgeException(error, context);
+    throw error;
+  }
 };
 
 const relativeUrl = (url: string) => {
