@@ -35,6 +35,10 @@ module.exports = withSentryConfig(module.exports, {
   tunnelRoute: "/monitoring",
 
   webpack: {
+    // Edge pages API routes under /api/og are already edge-wrapped by Next.js.
+    // Excluding them avoids incompatible pages-router auto-wrapping.
+    excludeServerRoutes: [/^\/api\/og(?:\/.*)?$/],
+
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
     // See the following for more information:
     // https://docs.sentry.io/product/crons/
