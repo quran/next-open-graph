@@ -44,7 +44,7 @@ const fetchFallbackPng = async (url: URL): Promise<Response> => {
   }
 
   const body = await response.arrayBuffer();
-  return toPngResponse(body);
+  return toPngResponse(body, response.headers, response.status);
 };
 
 /**
