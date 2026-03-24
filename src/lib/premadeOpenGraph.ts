@@ -13,10 +13,10 @@ const toPngResponse = (
 ): Response => {
   const responseHeaders = new Headers(headers);
 
-  responseHeaders.set("Content-Type", PNG_CONTENT_TYPE);
+  responseHeaders.set('Content-Type', PNG_CONTENT_TYPE);
 
-  if (!responseHeaders.get("Cache-Control")) {
-    responseHeaders.set("Cache-Control", DEFAULT_CACHE_CONTROL);
+  if (!responseHeaders.get('Cache-Control')) {
+    responseHeaders.set('Cache-Control', DEFAULT_CACHE_CONTROL);
   }
 
   return new Response(body, {
