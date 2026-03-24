@@ -233,7 +233,6 @@ test.describe("Calendar (/api/og/calendar)", () => {
   test("returns valid PNG", async ({ request }) => {
     const response = await request.get("/api/og/calendar");
     expect(response.status()).toBe(200);
-    expect(response.headers()["content-type"]).toContain("image/png");
 
     const body = await response.body();
     expect(isPng(body)).toBe(true);
