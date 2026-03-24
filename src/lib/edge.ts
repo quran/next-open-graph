@@ -80,12 +80,32 @@ export const fetchWithEdgeSentry = async (
   url: string | URL,
   context?: EdgeExceptionContext,
 ) => {
+  let response: Response;
+
   try {
-    return await fetch(url);
+    response = await fetch(url);
   } catch (error) {
     await captureEdgeException(error, context);
     throw error;
   }
+
+  if (!response.ok) {
+    const fetchUrl = typeof url === 'string' ? url : url.toString();
+    const error = new Error(
+      `Fetch failed with status ${response.status} ${response.statusText} for ${fetchUrl}`,
+    );
+
+    await captureEdgeException(error, {
+      ...context,
+      fetch_url: fetchUrl,
+      fetch_status: response.status,
+      fetch_status_text: response.statusText,
+    });
+
+    throw error;
+  }
+
+  return response;
 };
 
 const relativeUrl = (url: string) => {
