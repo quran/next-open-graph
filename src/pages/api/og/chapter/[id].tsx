@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import type { NextRequest } from 'next/server';
 import type { PageConfig } from 'next/types';
 import ChapterOpenGraph from '@/components/OpenGraph/Chapter';
-import { getEdgeBaseUrl, json, parseRequest } from '@/lib/edge';
+import { fetchWithEdgeSentry, getEdgeBaseUrl, json, parseRequest } from '@/lib/edge';
 import { loadOpenGraphBackground } from '@/lib/og';
 import { isValidChapterId, isValidVerseNumber } from '@/lib/validator';
 import bengali from '@/lib/fonts/bengali';
@@ -32,7 +32,11 @@ export default async function handler(req: NextRequest) {
 
   const edgeBaseUrl = getEdgeBaseUrl();
   const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
-    fetch(`${edgeBaseUrl}/data/${language.code}/${chapterId}.json`).then(
+    fetchWithEdgeSentry(`${edgeBaseUrl}/data/${language.code}/${chapterId}.json`, {
+      route: '/api/og/chapter/[id]',
+      chapter_id: chapterId,
+      language: language.code,
+    }).then(
       res => res.json() as Promise<ChapterResponse>,
     ),
     loadOpenGraphBackground(),

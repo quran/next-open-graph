@@ -21,6 +21,11 @@ type ParsedRequest = {
   searchParams: URLSearchParams;
 };
 
+type EdgeExceptionContext = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
+
 /**
  *  Parse request object
  *
@@ -48,6 +53,59 @@ export const parseRequest = (req: NextRequest): ParsedRequest => {
 export const getEdgeBaseUrl = () => {
   const port = process.env.PORT || '3000';
   return `http://127.0.0.1:${port}`;
+};
+
+const captureEdgeException = async (
+  error: unknown,
+  context?: EdgeExceptionContext,
+) => {
+  const Sentry = await import('@sentry/nextjs');
+
+  Sentry.withScope(scope => {
+    if (context) {
+      Object.entries(context).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          scope.setExtra(key, value);
+        }
+      });
+    }
+
+    Sentry.captureException(error);
+  });
+
+  await Sentry.flush(2000).catch(() => undefined);
+};
+
+export const fetchWithEdgeSentry = async (
+  url: string | URL,
+  context?: EdgeExceptionContext,
+) => {
+  let response: Response;
+
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    await captureEdgeException(error, context);
+    throw error;
+  }
+
+  if (!response.ok) {
+    const fetchUrl = typeof url === 'string' ? url : url.toString();
+    const error = new Error(
+      `Fetch failed with status ${response.status} ${response.statusText} for ${fetchUrl}`,
+    );
+
+    await captureEdgeException(error, {
+      ...context,
+      fetch_url: fetchUrl,
+      fetch_status: response.status,
+      fetch_status_text: response.statusText,
+    });
+
+    throw error;
+  }
+
+  return response;
 };
 
 const relativeUrl = (url: string) => {
