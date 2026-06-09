@@ -36,6 +36,16 @@ const STATIC_PREMADE_PAGES = [
   "/api/og/ramadanchallenge",
 ];
 
+const STUDY_MODE_PREMADE_PAGES = [
+  "/api/og/tafsir/2?verse=255&tafsir=Ibn%20Kathir&lang=en",
+  "/api/og/reflections/2?verse=255&author=Aisha%20Khan&lang=en",
+  "/api/og/lessons/2?verse=255&lang=en",
+  "/api/og/layers/67?verse=1&lang=en",
+  "/api/og/hadith/24?verse=35&lang=en",
+  "/api/og/qiraat/1?verse=4&lang=en",
+  "/api/og/related-verses/18?verse=10&lang=en",
+];
+
 // Sample chapters (first, middle, last, popular ones)
 const SAMPLE_CHAPTERS = [1, 2, 18, 36, 55, 67, 78, 114];
 
@@ -198,6 +208,23 @@ test.describe("Static Page OG Endpoints", () => {
       });
     }
   });
+});
+
+// ============================================================================
+// STUDY MODE ENDPOINTS: /api/og/{tab}/[chapterId]
+// ============================================================================
+test.describe("Study Mode OG Endpoints", () => {
+  for (const page of STUDY_MODE_PREMADE_PAGES) {
+    test(`${page} returns valid PNG`, async ({ request }) => {
+      const response = await request.get(page);
+      expect(response.status(), `Failed for ${page}`).toBe(200);
+      expect(response.headers()["content-type"]).toContain("image/png");
+
+      const body = await response.body();
+      expect(isPng(body), `Not a valid PNG for ${page}`).toBe(true);
+      expect(body.length).toBeGreaterThan(1000);
+    });
+  }
 });
 
 // ============================================================================
