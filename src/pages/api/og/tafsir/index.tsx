@@ -6,12 +6,6 @@ export const config: PageConfig = {
   runtime: 'edge',
 };
 
-/**
- * Handler of Tafsir page OpenGraph image.
- *
- * The URL keeps chapter/verse/tafsir params for share metadata context, but the
- * image itself is a premade static asset.
- */
 export default async function handler(): Promise<Response> {
   return getPremadeOpenGraphResponse({
     fallbackImageUrl: new URL(
