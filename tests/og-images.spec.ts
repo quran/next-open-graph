@@ -37,13 +37,13 @@ const STATIC_PREMADE_PAGES = [
 ];
 
 const STUDY_MODE_PREMADE_PAGES = [
-  "/api/og/tafsir/2?verse=255&tafsir=Ibn%20Kathir&lang=en",
-  "/api/og/reflections/2?verse=255&author=Aisha%20Khan&lang=en",
-  "/api/og/lessons/2?verse=255&lang=en",
-  "/api/og/layers/67?verse=1&lang=en",
-  "/api/og/hadith/24?verse=35&lang=en",
-  "/api/og/qiraat/1?verse=4&lang=en",
-  "/api/og/related-verses/18?verse=10&lang=en",
+  "/api/og/tafsir",
+  "/api/og/reflections",
+  "/api/og/lessons",
+  "/api/og/layers",
+  "/api/og/hadith",
+  "/api/og/qiraat",
+  "/api/og/related-verses",
 ];
 
 // Sample chapters (first, middle, last, popular ones)
