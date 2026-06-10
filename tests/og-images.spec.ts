@@ -36,6 +36,16 @@ const STATIC_PREMADE_PAGES = [
   "/api/og/ramadanchallenge",
 ];
 
+const STUDY_MODE_PREMADE_PAGES = [
+  "/api/og/tafsir",
+  "/api/og/reflections",
+  "/api/og/lessons",
+  "/api/og/layers",
+  "/api/og/hadith",
+  "/api/og/qiraat",
+  "/api/og/related-verses",
+];
+
 // Sample chapters (first, middle, last, popular ones)
 const SAMPLE_CHAPTERS = [1, 2, 18, 36, 55, 67, 78, 114];
 
@@ -198,6 +208,23 @@ test.describe("Static Page OG Endpoints", () => {
       });
     }
   });
+});
+
+// ============================================================================
+// STUDY MODE ENDPOINTS: /api/og/{tab}/[chapterId]
+// ============================================================================
+test.describe("Study Mode OG Endpoints", () => {
+  for (const page of STUDY_MODE_PREMADE_PAGES) {
+    test(`${page} returns valid PNG`, async ({ request }) => {
+      const response = await request.get(page);
+      expect(response.status(), `Failed for ${page}`).toBe(200);
+      expect(response.headers()["content-type"]).toContain("image/png");
+
+      const body = await response.body();
+      expect(isPng(body), `Not a valid PNG for ${page}`).toBe(true);
+      expect(body.length).toBeGreaterThan(1000);
+    });
+  }
 });
 
 // ============================================================================
