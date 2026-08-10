@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import type { PageConfig } from 'next/types';
 import ChapterOpenGraph from '@/components/OpenGraph/Chapter';
 import { json, parseRequest } from '@/lib/edge';
-import { loadOpenGraphBackground } from '@/lib/og';
+import { loadOpenGraphBackground, loadQdcLogo } from '@/lib/og';
 import { isValidChapterId, isValidVerseNumber } from '@/lib/validator';
 import bengali from '@/lib/fonts/bengali';
 import thai from '@/lib/fonts/thai';
@@ -31,11 +31,12 @@ export default async function handler(req: NextRequest) {
   if (!isValidChapterId(chapterId)) return json({ error: 'Invalid chapter id' }, 400);
 
   const url = new URL(req.url);
-  const [{ chapter }, bgSrc, surahFontData, mainFontData] = await Promise.all([
+  const [{ chapter }, bgSrc, logoSrc, surahFontData, mainFontData] = await Promise.all([
     fetch(`${url.origin}/data/${language.code}/${chapterId}.json`).then(
       res => res.json() as Promise<ChapterResponse>,
     ),
     loadOpenGraphBackground(),
+    loadQdcLogo(),
     surahNames(Number(chapterId)),
     loadFont(language.code),
   ]);
@@ -46,7 +47,13 @@ export default async function handler(req: NextRequest) {
   }
 
   return new ImageResponse(
-    <ChapterOpenGraph bg={bgSrc} chapter={chapter} language={language} verse={verse} />,
+    <ChapterOpenGraph
+      bg={bgSrc}
+      chapter={chapter}
+      language={language}
+      logo={logoSrc}
+      verse={verse}
+    />,
     {
       width: 1200,
       height: 630,
