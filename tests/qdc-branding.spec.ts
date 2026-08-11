@@ -4,19 +4,6 @@ import fs from 'fs';
 import path from 'path';
 
 const PREMADE_SHA256: Record<string, string> = {
-  'og-ar.png': '6ddaab78c8a978396c933340f29adb021073d231f3d205626f9133db2fa4e987',
-  'og-bn.png': '5b4d25627d9f0a107984b6d902ae45d09769553f37e9d8bc35c9829f9fc1875d',
-  'og-en.png': '9558f4b232c009a642bfcd703da26663af001fd3b8194f7bc3fbc4a4e73302b2',
-  'og-es.png': '729c4763c858e089dc65f8a1d7a998938ce53df654d81906e106710a7929a16b',
-  'og-fa.png': 'dfaf4a954bf5f58674ea9612f93e5b0c22b71863e9037b9cbee66c5ffd0a66db',
-  'og-fr.png': '943f64ca3cfc549b065ab1d2c0851f0eb6a7b2db463415df87a5b5807f63c4bd',
-  'og-id.png': 'd5f094b527a3c55d1a4e9ba0604d447b2b106f5ee47fe9559f1733aea72e9b8f',
-  'og-ms.png': '710589bd3197017dc64335fdfd95f693b18ca39b2e41a74fab2b697f62a50560',
-  'og-nl.png': '2749ecb782bd3ca26a005f5589ca9c10f306b9782c68f6b706d08beb52b8caa5',
-  'og-sw.png': '765728128ff07bf31a81e0ee0aa105ae5e444ae2bb4392aabf70015ffbbe10ca',
-  'og-tr.png': '38e17f62a62bfcd1c2037bae732e3d849ae76968f00cb9dc64c3bde1766a0b3d',
-  'og-ur.png': 'b352971ed1101f1c4307d5faece63009426f38331a7c5e06e8676077f6941e96',
-  'og-vi.png': '19f9c2af277bb34c78a5e7c01e029821b918781ac7e51a91bd7c13964318aa1e',
   'og_about_en.png': '24b589d2af7fed3e65b1efccdd084fe007e3f679aca176cde3bba46e21174723',
   'og_beyond_ramadan.png': 'cd25495585ff06e0312099eb6148683ead201b6217b9eb7fd05a71a3c87c14b5',
   'og_calendar.png': 'd84fc5f5852eb2f5cf66960f33a33686e6e40144a997c1e24a5414faeeee9fe5',
@@ -46,6 +33,22 @@ const PREMADE_SHA256: Record<string, string> = {
 };
 
 const MAX_PREMADE_TOTAL_BYTES = 3_200_000;
+const SHARED_HOME_SHA256 = '368a4a2322286a7137cb432e8145bae75354e117900b3331b6c3ad445e6e5bac';
+const LEGACY_HOME_LOCALES = [
+  'ar',
+  'bn',
+  'en',
+  'es',
+  'fa',
+  'fr',
+  'id',
+  'ms',
+  'nl',
+  'sw',
+  'tr',
+  'ur',
+  'vi',
+];
 
 test('generated Open Graph images use the official QDC horizontal logo', () => {
   const logoSource = fs.readFileSync(path.join(process.cwd(), 'src/components/Logo.tsx'), 'utf8');
@@ -62,6 +65,34 @@ test('all reviewed premade Open Graph images retain their approved QDC branding'
   Object.entries(PREMADE_SHA256).forEach(([fileName, expectedHash]) => {
     const image = fs.readFileSync(path.join(process.cwd(), 'public/premade', fileName));
     expect(crypto.createHash('sha256').update(image).digest('hex'), fileName).toBe(expectedHash);
+  });
+});
+
+test('homepage locales resolve to one centered 1200 by 630 QDC logo image', () => {
+  const sharedImagePath = path.join(process.cwd(), 'public/premade/og-quran-com.png');
+  const routeSource = fs.readFileSync(
+    path.join(process.cwd(), 'src/pages/api/og/index.tsx'),
+    'utf8',
+  );
+
+  expect(fs.existsSync(sharedImagePath), 'shared homepage image').toBe(true);
+
+  const image = fs.readFileSync(sharedImagePath);
+  expect(image.readUInt32BE(16), 'image width').toBe(1200);
+  expect(image.readUInt32BE(20), 'image height').toBe(630);
+  expect(crypto.createHash('sha256').update(image).digest('hex'), 'approved centered layout').toBe(
+    SHARED_HOME_SHA256,
+  );
+  expect(image.byteLength, 'shared homepage image payload').toBeLessThanOrEqual(20_000);
+
+  expect(routeSource).toContain('og-quran-com.png');
+  expect(routeSource).not.toContain('searchParams');
+  LEGACY_HOME_LOCALES.forEach((locale) => {
+    expect(routeSource, locale).not.toContain(`og-${locale}.png`);
+    expect(
+      fs.existsSync(path.join(process.cwd(), 'public/premade', `og-${locale}.png`)),
+      locale,
+    ).toBe(false);
   });
 });
 
