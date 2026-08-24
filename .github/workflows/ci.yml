@@ -1,0 +1,180 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - testing
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Enable Yarn
+        run: corepack enable && corepack prepare yarn@1.22.22 --activate
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+
+      - name: Install Playwright Chromium
+        run: yarn playwright install --with-deps chromium
+
+      - name: Functional tests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          server_log="${RUNNER_TEMP}/next-open-graph.log"
+          yarn start >"${server_log}" 2>&1 &
+          server_pid=$!
+          trap 'kill "${server_pid}" 2>/dev/null || true' EXIT
+
+          health_url='http://127.0.0.1:3000/api/og/about-the-quran'
+          for _ in {1..60}; do
+            if curl --silent --show-error --fail "${health_url}" >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          if ! curl --silent --show-error --fail "${health_url}" >/dev/null; then
+            cat "${server_log}"
+            exit 1
+          fi
+
+          yarn playwright test --grep-invert 'Visual Regression'
+
+  deploy:
+    name: Deploy ${{ github.ref_name }}
+    if: github.event_name == 'push'
+    needs: verify
+    runs-on: ubuntu-24.04
+    environment: ${{ github.ref_name }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      DEPLOYER_URL: https://gh-webhooks.quran.com
+      OIDC_AUDIENCE: qf-deployer
+    steps:
+      - name: Deploy tested commit
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          get_oidc_token() {
+            local response
+            if ! response="$(
+              printf '%s\n' "header = \"Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}\"" |
+                curl --config - --silent --show-error --fail-with-body \
+                  --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time 30 \
+                  --retry 2 --retry-delay 2 --retry-max-time 45 --retry-all-errors \
+                  "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${OIDC_AUDIENCE}"
+            )"; then
+              echo '::error::Could not request a GitHub Actions OIDC token' >&2
+              return 1
+            fi
+            jq -er '.value' <<<"${response}"
+          }
+
+          deployer_request() {
+            local method="$1"
+            local url="$2"
+            local oidc_token response http_status body error_message
+            if ! oidc_token="$(get_oidc_token)"; then
+              return 1
+            fi
+
+            if ! response="$(
+              printf '%s\n' "header = \"Authorization: Bearer ${oidc_token}\"" |
+                curl --config - --silent --show-error \
+                  --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time 30 \
+                  --retry 2 --retry-delay 2 --retry-max-time 10 --retry-all-errors \
+                  --request "${method}" --header 'Accept: application/json' \
+                  --write-out $'\n%{http_code}' "${url}"
+            )"; then
+              echo '::error::Could not reach the deployment service' >&2
+              return 1
+            fi
+
+            http_status="${response##*$'\n'}"
+            body="${response%$'\n'*}"
+            if [[ ! "${http_status}" =~ ^2[0-9][0-9]$ ]]; then
+              error_message="$(jq -r '.error // empty' <<<"${body}" 2>/dev/null || true)"
+              if [[ -z "${error_message}" ]]; then
+                error_message='unexpected response'
+              fi
+              echo "::error::Deployment service returned HTTP ${http_status}: ${error_message}" >&2
+              return 1
+            fi
+            printf '%s' "${body}"
+          }
+
+          response="$(deployer_request POST "${DEPLOYER_URL}/actions/deployments")"
+          deployment_id="$(jq -er '.deployment_id' <<<"${response}")"
+          status_url="$(jq -er '.status_url' <<<"${response}")"
+          logs_url="$(jq -er '.logs_url' <<<"${response}")"
+          hostname="$(jq -er '.hostname' <<<"${response}")"
+
+          {
+            echo "### ${GITHUB_REF_NAME} deployment"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+            echo "- Target: https://${hostname}"
+            echo "- [Deployment logs](${logs_url})"
+          } >>"${GITHUB_STEP_SUMMARY}"
+
+          for attempt in {0..150}; do
+            status="$(jq -er '.status' <<<"${response}")"
+            case "${status}" in
+              completed)
+                echo "Deployment ${deployment_id} completed successfully"
+                echo '- Result: successful' >>"${GITHUB_STEP_SUMMARY}"
+                exit 0
+                ;;
+              failed | cancelled | interrupted)
+                echo "::error::Deployment ${deployment_id} ended with status ${status}. Logs: ${logs_url}"
+                echo "- Result: ${status}" >>"${GITHUB_STEP_SUMMARY}"
+                exit 1
+                ;;
+              running)
+                ;;
+              *)
+                echo "::error::Deployment ${deployment_id} returned unknown status ${status}"
+                echo "- Result: unknown status \`${status}\`" >>"${GITHUB_STEP_SUMMARY}"
+                exit 1
+                ;;
+            esac
+
+            if ((attempt == 150)); then
+              echo "::error::Deployment ${deployment_id} did not finish within 25 minutes. Logs: ${logs_url}"
+              echo '- Result: timed out after 25 minutes' >>"${GITHUB_STEP_SUMMARY}"
+              exit 1
+            fi
+
+            sleep 10
+            response="$(deployer_request GET "${DEPLOYER_URL}${status_url}")"
+          done
