@@ -34,6 +34,7 @@ const PREMADE_SHA256: Record<string, string> = {
 
 const MAX_PREMADE_TOTAL_BYTES = 3_200_000;
 const SHARED_HOME_SHA256 = '368a4a2322286a7137cb432e8145bae75354e117900b3331b6c3ad445e6e5bac';
+const QURAN_FOUNDATION_SHA256 = '00eef4b441216fc1943b130b1736ddfe4a4a6f0a97e59838aa7ff87611101160';
 const LEGACY_HOME_LOCALES = [
   'ar',
   'bn',
@@ -94,6 +95,16 @@ test('homepage locales resolve to one centered 1200 by 630 QDC logo image', () =
       locale,
     ).toBe(false);
   });
+});
+
+test('Quran Foundation uses its approved 1200 by 630 Open Graph image', () => {
+  const image = fs.readFileSync(
+    path.join(process.cwd(), 'public/premade/og-quran-foundation.png'),
+  );
+
+  expect(image.readUInt32BE(16), 'image width').toBe(1200);
+  expect(image.readUInt32BE(20), 'image height').toBe(630);
+  expect(crypto.createHash('sha256').update(image).digest('hex')).toBe(QURAN_FOUNDATION_SHA256);
 });
 
 test('premade Open Graph images stay within their existing payload budget', () => {
