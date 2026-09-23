@@ -14,6 +14,7 @@ const LANGUAGES = [
   "sw",
   "tr",
   "ur",
+  "vi",
 ];
 
 // All static OG pages (endpoints without dynamic parameters)
