@@ -132,4 +132,4 @@ BASE_URL=https://og.qurancdn.com yarn test
 ### Test Coverage
 
 - **OG Image Generation**: Validates that all endpoints return valid PNG images
-- **Visual Regression**: Compares generated images against baseline snapshots for all 12 supported languages (ar, bn, en, es, fa, fr, id, ms, nl, sw, tr, ur)
+- **Visual Regression**: Compares generated images against baseline snapshots for all 13 supported languages (ar, bn, en, es, fa, fr, id, ms, nl, sw, tr, ur, vi)
