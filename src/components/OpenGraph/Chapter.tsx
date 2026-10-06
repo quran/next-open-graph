@@ -8,6 +8,7 @@ import Logo from '../Logo';
 
 interface ChapterOpenGraphProps extends BaseOpenGraphProps {
   chapter: Chapter;
+  logo: string;
   verse?: string;
 }
 
@@ -15,6 +16,7 @@ export default function ChapterOpenGraph({
   bg,
   language,
   chapter,
+  logo,
   verse,
 }: ChapterOpenGraphProps) {
   const locale = localizedText[language.code];
@@ -83,10 +85,10 @@ export default function ChapterOpenGraph({
       </div>
 
       <Logo
+        src={logo}
         style={{
-          fill: '#000000',
-          width: 223,
-          height: 40,
+          width: 237,
+          height: 50,
           position: 'absolute',
           bottom: 33,
           left: 46,

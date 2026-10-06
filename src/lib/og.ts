@@ -38,3 +38,5 @@ export const loadScreenshot = (locale: string) => {
 };
 
 export const loadOpenGraphBackground = () => loadFileOnEdge.asImage('/bg.png');
+
+export const loadQdcLogo = () => loadFileOnEdge.asImage('/qdc-horizontal-dark.png');

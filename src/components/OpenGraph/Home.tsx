@@ -4,10 +4,11 @@ import Logo from '../Logo';
 import BaseOpenGraph, { BaseOpenGraphProps } from './Base';
 
 interface HomeOpenGraphProps extends BaseOpenGraphProps {
+  logo: string;
   screenshot: string;
 }
 
-export default function HomeOpenGraph({ bg, screenshot, language }: HomeOpenGraphProps) {
+export default function HomeOpenGraph({ bg, logo, screenshot, language }: HomeOpenGraphProps) {
   const locale = localizedText[language.code];
 
   // a function to break long words in chinese and thai
@@ -71,10 +72,10 @@ export default function HomeOpenGraph({ bg, screenshot, language }: HomeOpenGrap
         }}
       >
         <Logo
+          src={logo}
           style={{
-            fill: '#000000',
-            width: 223,
-            height: 40,
+            width: 237,
+            height: 50,
           }}
         />
 
